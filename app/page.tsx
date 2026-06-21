@@ -73,7 +73,7 @@ export default function Home() {
         </header>
 
         <section>
-          <h2 className="text-xl font-bold mb-6 border-b-2 border-indigo-200 pb-2">勉強中の分野（言語）</h2>
+          <h2 className="text-center text-xl font-bold mb-6 border-b-2 border-indigo-200 pb-2">勉強中の分野（言語）</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             
             {/* mapを使ってループ処理 */}
@@ -99,7 +99,7 @@ export default function Home() {
         </section>
 		
 		    <section className="mt-12">
-          <h2 className="text-xl font-bold mb-6 border-b-2 border-indigo-200 pb-2">公開中のGitHubリポジトリ</h2>
+          <h2 className="text-center text-xl font-bold mb-6 border-b-2 border-indigo-200 pb-2">公開中のGitHubリポジトリ</h2>
           <div className="grid grid-cols-1 gap-4">
             {repos.map((repo: GitHubRepo) => (
               <a 
@@ -144,7 +144,7 @@ export default function Home() {
 
     {/* 猫画像が見たい */}
         <section className="mt-16">
-          <h2 className="text-xl font-bold mb-6 border-b-2 border-indigo-200 pb-2">
+          <h2 className="text-center text-xl font-bold mb-6 border-b-2 border-indigo-200 pb-2">
             猫画像切らしてたので助かる
           </h2>
 
