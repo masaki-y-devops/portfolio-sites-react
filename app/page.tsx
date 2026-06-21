@@ -16,10 +16,10 @@ interface GitHubRepo {
 
 export default function Home() {
 
-	const [repos, setRepos] = useState<GitHubRepo[]>([]);
+  const [repos, setRepos] = useState<GitHubRepo[]>([]);
   const [catImageUrl, setCatImageUrl] = useState<string | null>(null);
 	
-	// GitHub情報取得
+  // GitHub情報取得
   // インフラでいう curl コマンド的な役割となる
   // ラグを考慮し、非同期処理で実行
   useEffect(() => {
@@ -45,7 +45,7 @@ export default function Home() {
 
   //問い合わせボタン用処理
   const QueryBtnClick = () => {
-    alert("送信機能は未実装です！ごめんなさい！\r\nお詫びにに他の素晴らしいねこちゃんをお届けします。")
+    alert("送信機能は未実装です！ごめんなさい！\r\nお詫びに他の素晴らしいねこちゃんをお届けします。")
     refreshImg();
   }
 
