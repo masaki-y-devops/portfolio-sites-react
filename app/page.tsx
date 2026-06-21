@@ -45,7 +45,7 @@ export default function Home() {
 
   //問い合わせボタン用処理
   const QueryBtnClick = () => {
-    alert("送信機能は未実装です！ごめんなさい！\r\nお詫びにに他の素晴らしいねこちゃんをお届けします。")
+    alert("送信機能は未実装です！ごめんなさい！\r\nお詫びに他の素晴らしいねこちゃんをお届けします。")
     refreshImg();
   }
 
