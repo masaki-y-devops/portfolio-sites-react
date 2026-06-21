@@ -28,7 +28,7 @@ export default function Home() {
       const response = await fetch("https://api.github.com/users/masaki-y-devops/repos?sort=updated");
       // json形式のレスポンスをdata変数に代入
       const data = await response.json();
-      setRepos(data.slice(0, 4)); // 直近更新の4つだけ取得
+      setRepos(data.slice(0, 8)); // 直近更新の8つだけ取得
     };
     fetchRepos();
   }, []);
