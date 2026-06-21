@@ -16,10 +16,10 @@ interface GitHubRepo {
 
 export default function Home() {
 
-	const [repos, setRepos] = useState<GitHubRepo[]>([]);
+  const [repos, setRepos] = useState<GitHubRepo[]>([]);
   const [catImageUrl, setCatImageUrl] = useState<string | null>(null);
 	
-	// GitHub情報取得
+  // GitHub情報取得
   // インフラでいう curl コマンド的な役割となる
   // ラグを考慮し、非同期処理で実行
   useEffect(() => {
