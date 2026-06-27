@@ -1,7 +1,8 @@
 // クライアント側で実行
 "use client";
 
-import { Truculenta } from "next/font/google";
+//import { Truculenta } from "next/font/google";
+
 // 状態管理のためのuseState,useEffectを使用
 import { useState, useRef, useEffect } from "react";
 
@@ -25,6 +26,7 @@ export default function Home() {
   const [senderName, setSenderName] = useState<string>('');
 
   /*
+  // useRefでボタンクリック後の処理を実行しようとした残骸
   // モックのボタンが押されたかどうか
   const [btnClicked, setBtnClicked] = useState(false);
 
@@ -107,12 +109,12 @@ export default function Home() {
   // ねこ画像取得関数
   // ボタン押下時にも使うのでGitHubと異なり独立させた
   const refreshImg = async () => {
-      setCatImageUrl(null);
-      const res = await fetch("https://api.thecatapi.com/v1/images/search");
-      const images = await res.json();
-      console.log("fetchCatImg: ねこの画像情報を更新しましたよ", images);
-      setCatImageUrl(images[0].url);
-  };  
+    setCatImageUrl(null);
+    const res = await fetch("https://api.thecatapi.com/v1/images/search");
+    const images = await res.json();
+    console.log("fetchCatImg: ねこの画像情報を更新しましたよ", images);
+    setCatImageUrl(images[0].url);
+  };
 
   // 名前入力欄の文字列をuseStateで管理
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -122,14 +124,18 @@ export default function Home() {
   // 問い合わせボタン用処理
   const QueryBtnClick = () => {
     if (senderName && senderName.trim()) {
-      alert(senderName + "さん、こんにちは。\r\n送信機能は未実装です！ごめんなさい！\r\nお詫びに他の素晴らしいねこ画像をお届けします。")
+      alert(senderName + "さん、こんにちは。\n送信機能は未実装です！ごめんなさい！\nお詫びに他の素晴らしいねこ画像をお届けします。")
     } else {
-      alert("ご訪問ありがとうございます。\r\n送信機能は未実装です！ごめんなさい！\r\nお詫びに他の素晴らしいねこ画像をお届けします。")
+      alert("ご訪問ありがとうございます。\n送信機能は未実装です！ごめんなさい！\nお詫びに他の素晴らしいねこ画像をお届けします。")
     }
 
     localStorage.setItem('shouldScrollToCat', 'true');
 
-    window.location.reload();
+    // 従来、当該ボタンのクリックののち、「OK」押下後にウインドウ全体を読み込んでrefreshImg()を呼んでいたが、
+    // Next.js(React)は仮想DOMの監視により差分で変更があった要素のみを更新可能。
+    // そのためreloadではなく直でrefreshImg()を呼んでみる
+    //window.location.reload();
+    refreshImg();
   }
 
   // スキルデータの配列
@@ -144,7 +150,6 @@ export default function Home() {
 
   return (
     <main className="h-screen bg-slate-50 p-8 text-slate-900 overflow-y-auto">
-      {/* <div ref={startRef} /> */}
       <div className="max-w-3xl mx-auto w-full">
         <header className="mb-12 text-center">
           <h1 className="text-4xl font-extrabold text-indigo-700 mb-2">ポートフォリオ（もどき）サイト</h1>
@@ -197,7 +202,7 @@ export default function Home() {
               >
                 <h3 className="font-bold text-indigo-600">{repo.name}</h3>
                 <p className="text-sm text-slate-500">{repo.description || "No description"}</p>
-                <div className="mt-2 text-xs text-slate-400">Language: {repo.language}</div>
+                <div className="mt-2 text-xs text-slate-400">Language: {repo.language || "N/A"}</div>
               </a>
             ))}
             </div>
@@ -211,6 +216,7 @@ export default function Home() {
         </section>
 
         {/* 猫画像が見たい */}
+        {/* スクロールの位置特定用にidを設定 */}
         <section className="mt-12" id="cat_section">
           <h2 className="text-center text-xl font-bold mb-6 border-b-2 border-indigo-200 pb-2">
             猫画像切らしてたので助かる
@@ -265,7 +271,6 @@ export default function Home() {
           </div>
         </section>
       </div>
-      {/* <div ref={endRef} /> */}  
     </main>
   );
 }
