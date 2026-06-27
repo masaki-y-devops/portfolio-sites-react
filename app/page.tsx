@@ -1,7 +1,7 @@
 // クライアント側で実行
 "use client";
 
-//import { Truculenta } from "next/font/google";
+// import { Truculenta } from "next/font/google";
 
 // 状態管理のためのuseState,useEffectを使用
 import { useState, useRef, useEffect } from "react";
@@ -13,7 +13,7 @@ interface GitHubRepo {
   html_url: string;
   description: string | null; // 説明文は空(null)の場合もある
   stargazers_count: number;
-  language: string | null;
+  language: string | null; // プロフィールのリポジトリは言語未設定(null)
 }
 
 export default function Home() {
@@ -25,18 +25,6 @@ export default function Home() {
   const [catImageUrl, setCatImageUrl] = useState<string | null>(null);
   const [senderName, setSenderName] = useState<string>('');
 
-  /*
-  // useRefでボタンクリック後の処理を実行しようとした残骸
-  // モックのボタンが押されたかどうか
-  const [btnClicked, setBtnClicked] = useState(false);
-
-  // onClickイベントの中身
-  const onLoadRef = useRef<() => void>(() => {});
-
-  const startRef = useRef<HTMLDivElement>(null);
-  const endRef = useRef<HTMLDivElement>(null);
-	*/
-
   // 初回GitHub情報取得
   // 第二引数が空なので初回レンダリング時の実行
   // 中にfetchRepos関数が入れ子になっている
@@ -44,10 +32,10 @@ export default function Home() {
     const fetchRepos = async () => {
       setRepos(null);
       // GitHub APIより、自分のGitHubの公開リポジトリ情報を取得
-      const response = await fetch("https://api.github.com/users/masaki-y-devops/repos?sort=updated");
+      const gitres = await fetch("https://api.github.com/users/masaki-y-devops/repos?sort=updated");
       // json形式のレスポンスをdata変数に代入
-      const data = await response.json();
-      setRepos(data.slice(0, 6)); // 直近更新の6つだけ取得
+      const data = await gitres.json();
+      setRepos(data.slice(0, 8)); // 直近更新の8件取得
     };
     fetchRepos();
   }, []);
@@ -58,21 +46,72 @@ export default function Home() {
       refreshImg();
   }, []);
 
+  // 猫画像のonLoad時に作動する関数
   const whenImageLoaded = () => {
+    // ボタンが押下されたことを示すフラグの取得を試行して代入
     const shouldScroll = localStorage.getItem('shouldScrollToCat');
 
+    // もし取得が成功すれば、id=cat_sectionまで移動
     if (shouldScroll === 'true'){
+      // 猫画像のセクションの位置を特定
       const catElement = document.getElementById('cat_section');
 
-      if (catElement){
+      // 自動スクロール
+      if (catElement) {
         catElement.scrollIntoView({ behavior: 'auto', block: 'start' })
       }
 
+      // 後始末としてフラグをクリア
       localStorage.removeItem('shouldScrollToCat');
     }
   }
+
+  // ねこ画像取得関数
+  // ボタン押下時にも使うのでGitHubと異なり独立させた
+  const refreshImg = async () => {
+    setCatImageUrl(null);
+    const catres = await fetch("https://api.thecatapi.com/v1/images/search");
+    const images = await catres.json();
+    console.log("fetchCatImg: ねこの画像情報を更新しましたよ", images);
+    setCatImageUrl(images[0].url);
+  };
+
+  // 名前入力欄の文字列をuseStateで管理
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSenderName(e.target.value);
+  };
   
+  // 問い合わせボタン用処理
+  const QueryBtnClick = () => {
+    // 名前の入力があれば使用し、なければ挨拶を変更する分岐
+    if (senderName && senderName.trim()) {
+      alert(senderName + "さん、こんにちは。\n送信機能は未実装です！ごめんなさい！\nお詫びに他の素晴らしい、ねこ画像をお届けします。")
+    } else {
+      alert("ご訪問ありがとうございます。\n送信機能は未実装です！ごめんなさい！\nお詫びに他の素晴らしい、ねこ画像をお届けします。")
+    }
+
+    // ボタンが押されたことを示すフラグデータを保存しておく
+    localStorage.setItem('shouldScrollToCat', 'true');
+
+    // 従来、当該ボタンのクリックののち、「OK」押下後にウインドウ全体を読み込んでrefreshImg()を呼んでいたが、
+    // Reactは仮想DOMの監視により、イベント発生時＝状態（State）が変わったとき（この場合ボタン押下時）、差分で変更があった要素のみを更新可能。
+    // そのためreloadではなく直でrefreshImg()を呼んでみる
+    //window.location.reload();
+    refreshImg();
+  }
+
   /*
+  // 以下、useRefでボタンクリック後の処理を実行しようとした残骸
+
+  // モックのボタンが押されたかどうか
+  const [btnClicked, setBtnClicked] = useState(false);
+
+  // onClickイベントの中身
+  const onLoadRef = useRef<() => void>(() => {});
+
+  const startRef = useRef<HTMLDivElement>(null);
+  const endRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (!btnClicked){
       onLoadRef.current = () => {
@@ -80,9 +119,7 @@ export default function Home() {
       };
     }
   }, [btnClicked]);
-  */
 
-  /*
   // 意味:btnClicked（変数）の内容が変化したら、{}内の処理を実行する。
   // この場合は、内部でif判定により、btnClicked変数がtrueの場合のみ、下までのスクロールを実行する。
   // 第二引数（[btnClicked]部分）で条件を指定することはできない。
@@ -106,38 +143,6 @@ export default function Home() {
   }, [btnClicked]);
   */
 
-  // ねこ画像取得関数
-  // ボタン押下時にも使うのでGitHubと異なり独立させた
-  const refreshImg = async () => {
-    setCatImageUrl(null);
-    const res = await fetch("https://api.thecatapi.com/v1/images/search");
-    const images = await res.json();
-    console.log("fetchCatImg: ねこの画像情報を更新しましたよ", images);
-    setCatImageUrl(images[0].url);
-  };
-
-  // 名前入力欄の文字列をuseStateで管理
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSenderName(e.target.value);
-  };
-  
-  // 問い合わせボタン用処理
-  const QueryBtnClick = () => {
-    if (senderName && senderName.trim()) {
-      alert(senderName + "さん、こんにちは。\n送信機能は未実装です！ごめんなさい！\nお詫びに他の素晴らしいねこ画像をお届けします。")
-    } else {
-      alert("ご訪問ありがとうございます。\n送信機能は未実装です！ごめんなさい！\nお詫びに他の素晴らしいねこ画像をお届けします。")
-    }
-
-    localStorage.setItem('shouldScrollToCat', 'true');
-
-    // 従来、当該ボタンのクリックののち、「OK」押下後にウインドウ全体を読み込んでrefreshImg()を呼んでいたが、
-    // Next.js(React)は仮想DOMの監視により差分で変更があった要素のみを更新可能。
-    // そのためreloadではなく直でrefreshImg()を呼んでみる
-    //window.location.reload();
-    refreshImg();
-  }
-
   // スキルデータの配列
   const skills = [
     { name: "Shell", level: "中級？" },
@@ -148,11 +153,12 @@ export default function Home() {
     { name: "Haskell", level: "初級" },
   ];
 
+  // return以下の要素が動的に変化する
   return (
     <main className="h-screen bg-slate-50 p-8 text-slate-900 overflow-y-auto">
       <div className="max-w-3xl mx-auto w-full">
         <header className="mb-12 text-center">
-          <h1 className="text-4xl font-extrabold text-indigo-700 mb-2">masaki-y-devopsの遊び場</h1>
+          <h1 className="text-2xl font-extrabold text-indigo-700 mb-2">masaki-y-devopsの遊び場</h1>
           <p className="text-slate-500">React(TypeScript)で構築</p>
         </header>
 
@@ -214,6 +220,21 @@ export default function Home() {
           )}
         </section>
 
+        <section className="mt-12">
+          <h2 className="text-center text-xl font-bold mb-6 border-b-2 border-indigo-200 pb-2">
+            お気に入りの曲
+          </h2>
+          {/* Spotify公開プレイリストとの連携 */}
+          {/* 自分のSpotifyアカウントに公開プレイリストを作成して紐付け、アカウント側の操作（曲の追加・削除）により動的に変化させる */}
+          {/* iframe貼り付けで実装 */}
+          <div className="shadow-md rounded-xl overflow-hidden">
+            <iframe className="shadow-md rounded-xl" data-testid="embed-iframe" style={{ borderRadius: '12px', border: 'none' }} 
+              src="https://open.spotify.com/embed/playlist/635C2n92A07J8urkBP5mqH?utm_source=generator&si=abf6821c55c94fc1" 
+              width="100%" height="480" allowFullScreen={true} allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
+            </iframe>
+          </div>
+        </section>
+
         {/* 猫画像が見たい */}
         {/* スクロールの位置特定用にidを設定 */}
         <section className="mt-12" id="cat_section">
@@ -232,6 +253,7 @@ export default function Home() {
                 className="w-full h-auto max-h-[500px] rounded-xl shadow-md object-cover"
                 style={{ width: '100%', aspectRatio: '${width} / ${height}', objectFit: 'cover' }}
                 onLoad={whenImageLoaded}
+                onClick={() => alert("ねこです。よろしくお願いします。") }
               />
             </div>
             ) : (
@@ -246,7 +268,7 @@ export default function Home() {
 
         {/* --- お問い合わせセクション --- */}
         <section className="mt-12 max-w-3xl mx-auto bg-indigo-50 p-8 rounded-2xl border border-indigo-100">
-          <h2 className="text-xl font-bold mb-4 text-indigo-900">
+          <h2 className="text-l font-bold mb-4 text-indigo-900">
             お問い合わせフォーム（よくあるやつ）
           </h2>
           <div className="space-y-4">
