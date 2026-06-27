@@ -152,7 +152,7 @@ export default function Home() {
     <main className="h-screen bg-slate-50 p-8 text-slate-900 overflow-y-auto">
       <div className="max-w-3xl mx-auto w-full">
         <header className="mb-12 text-center">
-          <h1 className="text-4xl font-extrabold text-indigo-700 mb-2">ポートフォリオ（もどき）サイト</h1>
+          <h1 className="text-4xl font-extrabold text-indigo-700 mb-2">masaki-y-devopsの遊び場</h1>
           <p className="text-slate-500">React(TypeScript)で構築</p>
         </header>
 
@@ -181,7 +181,6 @@ export default function Home() {
                 </span>
               </div>
             ))}
-
           </div>
         </section>
 		
