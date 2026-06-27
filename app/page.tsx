@@ -1,8 +1,6 @@
 // クライアント側で実行
 "use client";
 
-// import { Truculenta } from "next/font/google";
-
 // 状態管理のためのuseState,useEffectを使用
 import { useState, useRef, useEffect } from "react";
 
@@ -20,31 +18,38 @@ export default function Home() {
 
   // 変数を操作するための「関数」宣言
   // 上からGitHub情報、ねこ画像URL、名前欄に入力された文字列を格納する。
-
   const [repos, setRepos] = useState<GitHubRepo[] | null>([]);
   const [catImageUrl, setCatImageUrl] = useState<string | null>(null);
   const [senderName, setSenderName] = useState<string>('');
 
-  // 初回GitHub情報取得
-  // 第二引数が空なので初回レンダリング時の実行
-  // 中にfetchRepos関数が入れ子になっている
+  // useEffectによる関数のトリガー
+  // GitHub API用とねこ画像取得用で分かれていたが、可読性向上のために、
+  // GitHub取得用の関数を独立させて両関数呼び出しを統合した
+  // 第二引数（"[]"部分)が空なので初回レンダリング時の実行となる
+  // もし第二引数を指定すると、その内容変更時にトリガーされることになる
   useEffect(() => {
-    const fetchRepos = async () => {
+    fetchRepos();
+    fetchCatImg();
+  }, []);
+
+  // GitHub APIより公開リポジトリ情報を取得する関数
+  const fetchRepos = async () => {
       setRepos(null);
       // GitHub APIより、自分のGitHubの公開リポジトリ情報を取得
       const gitres = await fetch("https://api.github.com/users/masaki-y-devops/repos?sort=updated");
       // json形式のレスポンスをdata変数に代入
       const data = await gitres.json();
       setRepos(data.slice(0, 8)); // 直近更新の8件取得
-    };
-    fetchRepos();
-  }, []);
+  };
 
-  // 初回ねこ画像取得実行用
-  // 第二引数が空なので初回レンダリング時の実行
-  useEffect(() => {
-      refreshImg();
-  }, []);
+   // ねこ画像取得関数
+  const fetchCatImg = async () => {
+    setCatImageUrl(null);
+    const catres = await fetch("https://api.thecatapi.com/v1/images/search");
+    const images = await catres.json();
+    console.log("fetchCatImg: ねこの画像情報を更新しましたよ", images);
+    setCatImageUrl(images[0].url);
+  };
 
   // 猫画像のonLoad時に作動する関数
   const whenImageLoaded = () => {
@@ -65,16 +70,6 @@ export default function Home() {
       localStorage.removeItem('shouldScrollToCat');
     }
   }
-
-  // ねこ画像取得関数
-  // ボタン押下時にも使うのでGitHubと異なり独立させた
-  const refreshImg = async () => {
-    setCatImageUrl(null);
-    const catres = await fetch("https://api.thecatapi.com/v1/images/search");
-    const images = await catres.json();
-    console.log("fetchCatImg: ねこの画像情報を更新しましたよ", images);
-    setCatImageUrl(images[0].url);
-  };
 
   // 名前入力欄の文字列をuseStateで管理
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -97,7 +92,7 @@ export default function Home() {
     // Reactは仮想DOMの監視により、イベント発生時＝状態（State）が変わったとき（この場合ボタン押下時）、差分で変更があった要素のみを更新可能。
     // そのためreloadではなく直でrefreshImg()を呼んでみる
     //window.location.reload();
-    refreshImg();
+    fetchCatImg();
   }
 
   /*
