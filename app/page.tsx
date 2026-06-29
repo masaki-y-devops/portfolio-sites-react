@@ -20,7 +20,7 @@ export default function Home() {
   // 上からGitHub情報、ねこ画像URL、名前欄に入力された文字列を格納する。
   const [repos, setRepos] = useState<GitHubRepo[] | null>([]);
   const [catImageUrl, setCatImageUrl] = useState<string | null>(null);
-  const [senderName, setSenderName] = useState<string>('');
+  //const [senderName, setSenderName] = useState<string>('');
 
   // useEffectによる関数のトリガー
   // GitHub API用とねこ画像取得用で分かれていたが、可読性向上のために、
@@ -71,10 +71,12 @@ export default function Home() {
     }
   }
 
+  /*
   // 名前入力欄の文字列をuseStateで管理
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSenderName(e.target.value);
   };
+  */
   
   // 問い合わせボタン用処理
   const QueryBtnClick = () => {
@@ -265,11 +267,11 @@ export default function Home() {
               <label className="block text-sm font-medium text-indigo-700">お名前</label>
               <input 
                 type="text"
-                value={senderName}
+                //value={senderName}
                 placeholder="お名前の入力欄"
                 className="w-full mt-1 p-2 rounded-md border border-indigo-200 focus:ring-2 focus:ring-indigo-500 outline-none"
                 //onChange={(e) => console.log("入力中:", e.target.value)} 
-                onChange={handleChange}
+                //onChange={handleChange}
               />
             </div>
             <button 
