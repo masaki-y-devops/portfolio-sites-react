@@ -78,13 +78,7 @@ export default function Home() {
   
   // 問い合わせボタン用処理
   const QueryBtnClick = () => {
-    // 名前の入力があれば使用し、なければ挨拶を変更する分岐
-    if (senderName && senderName.trim()) {
-      //alert(senderName + "さん、こんにちは。\n送信機能は未実装です！ごめんなさい！\nお詫びに他の素晴らしい、ねこ画像をお届けします。")
-    } else {
-      alert("ご訪問ありがとうございます。\n送信機能は未実装です！ごめんなさい！\nお詫びに他の素晴らしい、ねこ画像をお届けします。")
-    }
-
+	
     // ボタンが押されたことを示すフラグデータを保存しておく
     localStorage.setItem('shouldScrollToCat', 'true');
 
