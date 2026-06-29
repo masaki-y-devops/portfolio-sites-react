@@ -267,11 +267,11 @@ export default function Home() {
               <label className="block text-sm font-medium text-indigo-700">お名前</label>
               <input 
                 type="text"
-                value={senderName}
+                //value={senderName}
                 placeholder="お名前の入力欄"
                 className="w-full mt-1 p-2 rounded-md border border-indigo-200 focus:ring-2 focus:ring-indigo-500 outline-none"
                 //onChange={(e) => console.log("入力中:", e.target.value)} 
-                onChange={handleChange}
+                //onChange={handleChange}
               />
             </div>
             <button 
