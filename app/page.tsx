@@ -2,7 +2,7 @@
 "use client";
 
 // 状態管理のためのuseState,useEffectを使用
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 // GitHub APIから返るデータの「形」を定義
 interface GitHubRepo {
@@ -80,7 +80,7 @@ export default function Home() {
   const QueryBtnClick = () => {
     // 名前の入力があれば使用し、なければ挨拶を変更する分岐
     if (senderName && senderName.trim()) {
-      alert(senderName + "さん、こんにちは。\n送信機能は未実装です！ごめんなさい！\nお詫びに他の素晴らしい、ねこ画像をお届けします。")
+      alert(こんにちは。\n送信機能は未実装です！ごめんなさい！\nお詫びに他の素晴らしい、ねこ画像をお届けします。")
     } else {
       alert("ご訪問ありがとうございます。\n送信機能は未実装です！ごめんなさい！\nお詫びに他の素晴らしい、ねこ画像をお届けします。")
     }
