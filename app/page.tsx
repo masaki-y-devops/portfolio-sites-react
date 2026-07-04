@@ -22,16 +22,6 @@ export default function Home() {
   const [catImageUrl, setCatImageUrl] = useState<string | null>(null);
   //const [senderName, setSenderName] = useState<string>('');
 
-  // useEffectによる関数のトリガー
-  // GitHub API用とねこ画像取得用で分かれていたが、可読性向上のために、
-  // GitHub取得用の関数を独立させて両関数呼び出しを統合した
-  // 第二引数（"[]"部分)が空なので初回レンダリング時の実行となる
-  // もし第二引数を指定すると、その内容変更時にトリガーされることになる
-  useEffect(() => {
-    fetchRepos();
-    fetchCatImg();
-  }, []);
-
   // GitHub APIより公開リポジトリ情報を取得する関数
   const fetchRepos = async () => {
       setRepos(null);
@@ -42,7 +32,7 @@ export default function Home() {
       setRepos(data?.slice(0, 8)); // 直近更新の8件取得
   };
 
-   // ねこ画像取得関数
+  // ねこ画像取得関数
   const fetchCatImg = async () => {
     setCatImageUrl(null);
     const catres = await fetch("https://api.thecatapi.com/v1/images/search");
@@ -50,6 +40,21 @@ export default function Home() {
     console.log("fetchCatImg: ねこの画像情報を更新しましたよ", images);
     setCatImageUrl(images[0].url);
   };
+
+  // useEffectによる関数のトリガー
+  // GitHub API用とねこ画像取得用で分かれていたが、可読性向上のために、
+  // GitHub取得用の関数を独立させて両関数呼び出しを統合した
+  // 第二引数（"[]"部分)が空なので初回レンダリング時の実行となる
+  // もし第二引数を指定すると、その内容変更時にトリガーされることになる
+  // ESLintのエラー修正にトライしてみる -> 成功。各関数をasync関数で包む。
+  useEffect(() => {
+    const fetchAll = async () => {
+      await fetchRepos();
+      await fetchCatImg();
+    }
+    
+    fetchAll();
+  }, []);
 
   // 猫画像のonLoad時に作動する関数
   const whenImageLoaded = () => {
