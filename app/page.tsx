@@ -11,7 +11,7 @@ interface GitHubRepo {
   html_url: string;
   description: string | null; // 説明文は空(null)の場合もある
   stargazers_count: number;
-  language: string | null; // プロフィールのリポジトリは言語未設定(null)
+  language: string | null; // プロフィールやMarkdownのみのリポジトリは言語未設定(null)
 }
 
 export default function Home() {
@@ -21,7 +21,8 @@ export default function Home() {
   const [repos, setRepos] = useState<GitHubRepo[] | null>([]);
   const [catImageUrl, setCatImageUrl] = useState<string | null>(null);
 
-   // GitHub APIより公開リポジトリ情報を取得する関数
+  // GitHub APIより公開リポジトリ情報を取得する関数
+  // ESLintの指摘により、useEffectより上に定義を配置
   const fetchRepos = async () => {
       setRepos(null);
       // GitHub APIより、自分のGitHubの公開リポジトリ情報を取得
@@ -45,9 +46,14 @@ export default function Home() {
   // GitHub取得用の関数を独立させて両関数呼び出しを統合した
   // 第二引数（"[]"部分)が空なので初回レンダリング時の実行となる
   // もし第二引数を指定すると、その内容変更時にトリガーされることになる
+  // ESLintのエラー修正にトライしてみる -> 成功。各関数をasync関数で包む。
   useEffect(() => {
-    fetchRepos();
-    fetchCatImg();
+    const fetchAll = async () => {
+      await fetchRepos();
+      await fetchCatImg();
+    }
+    
+    fetchAll();
   }, []);
 
   // 猫画像のonLoad時に作動する関数
