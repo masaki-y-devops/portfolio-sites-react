@@ -206,6 +206,7 @@ export default function Home() {
                 width={800}
                 height={600}
                 className="w-full h-auto"
+                onLoad={whenImageLoaded}
                 //fill
                 //sizes="(max-width: 768px) 100vw, 800px"
                 //style={{ objectFit: 'cover' }}
