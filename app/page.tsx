@@ -14,18 +14,19 @@ interface GitHubRepo {
   html_url: string;
   description: string | null; // 説明文は空(null)の場合もある
   stargazers_count: number;
-  language: string | null; // プロフィールのリポジトリは言語未設定(null)
+  language: string | null; // プロフィールやMarkdownのみのリポジトリは言語未設定(null)
 }
 
 export default function Home() {
 
   // 変数を操作するための「関数」宣言
-  // 上からGitHub情報、ねこ画像URL、名前欄に入力された文字列を格納する。
+  // 上からGitHub情報、ねこ画像URLを格納する。
   const [repos, setRepos] = useState<GitHubRepo[] | null>([]);
   const [catImageUrl, setCatImageUrl] = useState<string | null>(null);
   //const [senderName, setSenderName] = useState<string>('');
 
   // GitHub APIより公開リポジトリ情報を取得する関数
+  // ESLintの指摘により、useEffectより上に定義を配置
   const fetchRepos = async () => {
       setRepos(null);
       // GitHub APIより、自分のGitHubの公開リポジトリ情報を取得
@@ -78,13 +79,6 @@ export default function Home() {
       localStorage.removeItem('shouldScrollToCat');
     }
   }
-
-  /*
-  // 名前入力欄の文字列をuseStateで管理
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSenderName(e.target.value);
-  };
-  */
   
   // 問い合わせボタン用処理
   const QueryBtnClick = () => {
@@ -98,49 +92,6 @@ export default function Home() {
     //window.location.reload();
     fetchCatImg();
   }
-
-  /*
-  // 以下、useRefでボタンクリック後の処理を実行しようとした残骸
-
-  // モックのボタンが押されたかどうか
-  const [btnClicked, setBtnClicked] = useState(false);
-
-  // onClickイベントの中身
-  const onLoadRef = useRef<() => void>(() => {});
-
-  const startRef = useRef<HTMLDivElement>(null);
-  const endRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!btnClicked){
-      onLoadRef.current = () => {
-        startRef.current?.scrollIntoView({ behavior: 'auto', block: 'start' })
-      };
-    }
-  }, [btnClicked]);
-
-  // 意味:btnClicked（変数）の内容が変化したら、{}内の処理を実行する。
-  // この場合は、内部でif判定により、btnClicked変数がtrueの場合のみ、下までのスクロールを実行する。
-  // 第二引数（[btnClicked]部分）で条件を指定することはできない。
-  // これにより、サイト内のボタンが押されてリロードされた場合にのみ、
-  // ページ最下部まで自動スクロールして、変化したねこ画像を確実に見てもらえる。
-  useEffect(() => {
-    if (btnClicked) {
-      //スクロールするやつを書く
-      // 注意点
-      // bahaviourが'smooth'だと、Windowsのアニメーションがオフになっていると動作しない。
-      // blockはendではなくstartに設定することで、確実に下まで行ける。
-      // API取得のラグがかなりあるので、50msでは足りなかった。結局1000msまで伸ばした。
-      // ユーザーがダイアログのOKを押すタイミングではなく、あくまでサイト上のボタンが押された瞬間から
-      // カウントされるため、ダイアログが速やかに閉じられないと誤作動を起こす。
-      const timer = setTimeout(() => {
-        endRef.current?.scrollIntoView({ behavior: 'auto', block: 'start' });
-      }, 1000);
-      return () => clearTimeout(timer);
-    }
-    setBtnClicked(false);
-  }, [btnClicked]);
-  */
 
   // スキルデータの配列
   const skills = [
