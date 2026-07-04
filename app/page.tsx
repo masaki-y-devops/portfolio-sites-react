@@ -14,13 +14,13 @@ interface GitHubRepo {
   html_url: string;
   description: string | null; // 説明文は空(null)の場合もある
   stargazers_count: number;
-  language: string | null; // プロフィールのリポジトリは言語未設定(null)
+  language: string | null; // プロフィールやMarkdownのみのリポジトリは言語未設定(null)
 }
 
 export default function Home() {
 
   // 変数を操作するための「関数」宣言
-  // 上からGitHub情報、ねこ画像URL、名前欄に入力された文字列を格納する。
+  // 上からGitHub情報、ねこ画像URLを格納する。
   const [repos, setRepos] = useState<GitHubRepo[] | null>([]);
   const [catImageUrl, setCatImageUrl] = useState<string | null>(null);
 
