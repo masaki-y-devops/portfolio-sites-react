@@ -96,7 +96,7 @@ export default function Home() {
         setCatImageUrl(null);
         const catres = await fetch("https://api.thecatapi.com/v1/images/search");
         const images = await catres.json();
-        console.log("SpawnNetCat: 新しいねこを呼びました", images);
+        console.log("SpawnNewCat: 新しいねこを呼びました", images);
         setCatImageUrl(images[0].url);
       } catch (error) {
         console.error('通信エラー', error)
