@@ -4,6 +4,9 @@
 // 状態管理のためのuseState,useEffectを使用
 import { useState, useEffect } from "react";
 
+// ねこ画像をより効率的に扱うためにnext / imageコンポーネントを使用(ESLintの指摘に対応)
+import Image from 'next/image';
+
 // GitHub APIから返るデータの「形」を定義
 interface GitHubRepo {
   id: number;
@@ -192,6 +195,7 @@ export default function Home() {
           {/* GitHub側と同じく三項演算子（条件付きレンダリング）*/}
           {catImageUrl ? (
             <div className="mt-6 flex justify-center">
+              {/*
               <img
                 src={catImageUrl}
                 alt="かわいいねこの画像"
@@ -201,6 +205,21 @@ export default function Home() {
                 onLoad={whenImageLoaded}
                 onClick={() => alert("ねこです。よろしくお願いします。") }
               />
+              */}
+              {/* 従来のimgタグから、next/imageへ変更（ESLint指摘） */}
+              <div 
+                className="w-full h-[500px] rounded-xl shadow-md overflow-hidden" 
+                style={{ width: '100%', height: '500px', }}
+              >
+                <Image
+                src={catImageUrl}
+                alt="かわいいねこの画像"
+                fill
+                sizes="(max-width: 768px) 100vw, 800px"
+                style={{ objectFit: 'cover' }}
+                onLoad={whenImageLoaded}
+                />
+              </div>
             </div>
             ) : (
             <div className="flex justify-center">
