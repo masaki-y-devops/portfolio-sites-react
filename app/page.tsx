@@ -39,7 +39,7 @@ export default function Home() {
       const gitres = await fetch("https://api.github.com/users/masaki-y-devops/repos?sort=updated");
       // json形式のレスポンスをdata変数に代入
       const data = await gitres.json();
-      setRepos(data.slice(0, 8)); // 直近更新の8件取得
+      setRepos(data?.slice(0, 8)); // 直近更新の8件取得
   };
 
    // ねこ画像取得関数
