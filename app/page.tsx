@@ -5,7 +5,7 @@
 import { useState, useEffect } from "react";
 
 // ねこ画像をより効率的に扱うためにnext / imageコンポーネントを使用(ESLintの指摘に対応)
-import Image from 'next/image';
+import Image from "next/image";
 
 // GitHub APIから返るデータの「形」を定義
 interface GitHubRepo {
@@ -23,6 +23,7 @@ export default function Home() {
   // 上からGitHub情報、ねこ画像URLを格納する。
   const [repos, setRepos] = useState<GitHubRepo[] | null>([]);
   const [catImageUrl, setCatImageUrl] = useState<string | null>(null);
+  //const [senderName, setSenderName] = useState<string>('');
 
   // GitHub APIより公開リポジトリ情報を取得する関数
   // ESLintの指摘により、useEffectより上に定義を配置
@@ -32,10 +33,10 @@ export default function Home() {
       const gitres = await fetch("https://api.github.com/users/masaki-y-devops/repos?sort=updated");
       // json形式のレスポンスをdata変数に代入
       const data = await gitres.json();
-      setRepos(data.slice(0, 8)); // 直近更新の8件取得
+      setRepos(data?.slice(0, 8)); // 直近更新の8件取得
   };
 
-   // ねこ画像取得関数
+  // ねこ画像取得関数
   const fetchCatImg = async () => {
     setCatImageUrl(null);
     const catres = await fetch("https://api.thecatapi.com/v1/images/search");
@@ -195,18 +196,6 @@ export default function Home() {
           {/* GitHub側と同じく三項演算子（条件付きレンダリング）*/}
           {catImageUrl ? (
             <div className="mt-6 flex justify-center">
-              {/*
-              <img
-                src={catImageUrl}
-                alt="かわいいねこの画像"
-                //className="max-h-64 rounded-xl shadow-md object-cover"
-                className="w-full h-auto max-h-[500px] rounded-xl shadow-md object-cover"
-                style={{ width: '100%', aspectRatio: '${width} / ${height}', objectFit: 'cover' }}
-                onLoad={whenImageLoaded}
-                onClick={() => alert("ねこです。よろしくお願いします。") }
-              />
-              */}
-              {/* 従来のimgタグから、next/imageへ変更（ESLint指摘） */}
               <div 
                 className="w-full h-[500px] rounded-xl shadow-md overflow-hidden" 
                 style={{ width: '100%', height: '500px', }}
@@ -214,10 +203,12 @@ export default function Home() {
                 <Image
                 src={catImageUrl}
                 alt="かわいいねこの画像"
-                fill
-                sizes="(max-width: 768px) 100vw, 800px"
-                style={{ objectFit: 'cover' }}
-                onLoad={whenImageLoaded}
+                width={800}
+                height={600}
+                className="w-full h-auto"
+                //fill
+                //sizes="(max-width: 768px) 100vw, 800px"
+                //style={{ objectFit: 'cover' }}
                 />
               </div>
             </div>
