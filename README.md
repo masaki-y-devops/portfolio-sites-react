@@ -10,7 +10,7 @@ React(TypeScript)の学習目的で作成したポートフォリオ風サイト
 
 - React特有の要素の学習(useState,useEffect,useRefなど)
 
-- Vercelによる自動的なCI/CDの実行やデプロイ
+- GitHub Actions, Vercelによる自動的なCI/CDの実行やデプロイ
 
 を試したくて作成してみました。
 
