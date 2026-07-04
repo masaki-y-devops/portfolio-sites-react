@@ -23,43 +23,47 @@ export default function Home() {
   // 上からGitHub情報、ねこ画像URLを格納する。
   const [repos, setRepos] = useState<GitHubRepo[] | null>([]);
   const [catImageUrl, setCatImageUrl] = useState<string | null>(null);
-  //const [senderName, setSenderName] = useState<string>('');
-
-  // GitHub APIより公開リポジトリ情報を取得する関数
-  // ESLintの指摘により、useEffectより上に定義を配置
-  const fetchRepos = async () => {
-      setRepos(null);
-      // GitHub APIより、自分のGitHubの公開リポジトリ情報を取得
-      const gitres = await fetch("https://api.github.com/users/masaki-y-devops/repos?sort=updated");
-      // json形式のレスポンスをdata変数に代入
-      const data = await gitres.json();
-      setRepos(data?.slice(0, 8)); // 直近更新の8件取得
-  };
-
-  // ねこ画像取得関数
-  const fetchCatImg = async () => {
-    setCatImageUrl(null);
-    const catres = await fetch("https://api.thecatapi.com/v1/images/search");
-    const images = await catres.json();
-    console.log("fetchCatImg: ねこの画像情報を更新しましたよ", images);
-    setCatImageUrl(images[0].url);
-  };
 
   // useEffectによる関数のトリガー
-  // GitHub API用とねこ画像取得用で分かれていたが、可読性向上のために、
-  // GitHub取得用の関数を独立させて両関数呼び出しを統合した
-  // 第二引数（"[]"部分)が空なので初回レンダリング時の実行となる
-  // もし第二引数を指定すると、その内容変更時にトリガーされることになる
-  // ESLintのエラー修正にトライしてみる -> 成功。各関数をasync関数で包む。
   useEffect(() => {
-    const fetchAll = async () => {
-      await fetchRepos();
-      await fetchCatImg();
+    // APIの応答がある前に画面遷移され、State更新が空振りしないようにするフラグ(ESLintエラー対策)
+    let isMounted = true;
+
+    async function fetchAllData() {
+      try {
+        // 以下の三項演算子による未取得状態の判定用
+        setRepos(null);
+        setCatImageUrl(null);
+
+        // 複数のfetchをPromise.allで同時に行う（表示速度向上のため）
+        const [gitres, catres] = await Promise.all([
+          fetch("https://api.github.com/users/masaki-y-devops/repos?sort=updated"),
+          fetch("https://api.thecatapi.com/v1/images/search")
+        ]);
+
+        const data = await gitres.json();
+        const images = await catres.json();
+
+        // isMountedフラグを見て画面上にあるときだけ取得値をセット
+        if (isMounted){
+          setRepos(data?.slice(0, 8)); // 直近更新の8件取得
+          setCatImageUrl(images[0].url);
+        }
+      } catch (error) {
+        console.error(error);
+      }
     }
+
+    fetchAllData();
     
-    fetchAll();
+    return () => {
+      // 画面から消えるときに実行されるクリーンアップ関数
+      // APIの応答がある前に画面遷移がされた場合、フラグを折る→State更新がされずエラー防止
+      isMounted = false;
+    }
   }, []);
 
+  
   // 猫画像のonLoad時に作動する関数
   const whenImageLoaded = () => {
     // ボタンが押下されたことを示すフラグの取得を試行して代入
@@ -86,11 +90,20 @@ export default function Home() {
     // ボタンが押されたことを示すフラグデータを保存しておく
     localStorage.setItem('shouldScrollToCat', 'true');
 
-    // 従来、当該ボタンのクリックののち、「OK」押下後にウインドウ全体を読み込んでrefreshImg()を呼んでいたが、
-    // Reactは仮想DOMの監視により、イベント発生時＝状態（State）が変わったとき（この場合ボタン押下時）、差分で変更があった要素のみを更新可能。
-    // そのためreloadではなく直でrefreshImg()を呼んでみる
-    //window.location.reload();
-    fetchCatImg();
+    // ボタン押下時のねこ画像更新用
+    async function SpawnNewCat() {
+      try {
+        setCatImageUrl(null);
+        const catres = await fetch("https://api.thecatapi.com/v1/images/search");
+        const images = await catres.json();
+        console.log("SpawnNetCat: 新しいねこを呼びました", images);
+        setCatImageUrl(images[0].url);
+      } catch (error) {
+        console.error('通信エラー', error)
+      }  
+    }
+
+    SpawnNewCat();
   }
 
   // スキルデータの配列
@@ -207,9 +220,6 @@ export default function Home() {
                 height={600}
                 className="w-full h-auto"
                 onLoad={whenImageLoaded}
-                //fill
-                //sizes="(max-width: 768px) 100vw, 800px"
-                //style={{ objectFit: 'cover' }}
                 />
               </div>
             </div>
@@ -233,18 +243,15 @@ export default function Home() {
               <label className="block text-sm font-medium text-indigo-700">お名前</label>
               <input 
                 type="text"
-                //value={senderName}
                 placeholder="お名前の入力欄"
                 className="w-full mt-1 p-2 rounded-md border border-indigo-200 focus:ring-2 focus:ring-indigo-500 outline-none"
-                //onChange={(e) => console.log("入力中:", e.target.value)} 
-                //onChange={handleChange}
               />
             </div>
             <button 
               onClick={QueryBtnClick}
               title="ただの送信ボタンじゃありません!"
               className="w-full bg-indigo-600 text-white py-2 rounded-md font-bold hover:bg-indigo-700 transition-all shadow-lg active:scale-95">
-              メッセージを送る（モック）
+              メッセージを送る（新しいねこを呼ぶ）
             </button>
           </div>
         </section>

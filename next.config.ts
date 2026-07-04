@@ -8,10 +8,6 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: '**.thecatapi.com',
       },
-      {
-        protocol: 'https',
-        hostname: '**.github.com',
-      },
     ],
   },
 };
