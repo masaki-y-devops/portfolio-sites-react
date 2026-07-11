@@ -91,7 +91,7 @@ export default function Home() {
   }
   
   // 問い合わせボタン用処理
-  const QueryBtnClick = () => {
+  const SpawnBtnClick = () => {
 	
     // ボタンが押されたことを示すフラグデータを保存しておく
     localStorage.setItem('shouldScrollToCat', 'true');
@@ -239,7 +239,7 @@ export default function Home() {
               }
             </section>
             <button 
-              onClick={QueryBtnClick}
+              onClick={SpawnBtnClick}
               title="ただの送信ボタンじゃありません!"
               className="w-full bg-indigo-600 text-white py-2 rounded-md font-bold hover:bg-indigo-700 transition-all shadow-lg active:scale-95">
               新しいねこを呼ぶ
