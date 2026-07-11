@@ -212,7 +212,7 @@ export default function Home() {
           </h2>
           <div className="space-y-4">
             <section className="mt-12" id="cat_section">
-              {/* catImageUrlがある時「だけ」、imgタグを表示 */}
+              {/* catImageUrlがある時「だけ」、Imageコンポーネントを表示 */}
               {/* GitHub側と同じく三項演算子（条件付きレンダリング）*/}
               {catImageUrl ? (
                 <div className="mt-6 flex justify-center">
