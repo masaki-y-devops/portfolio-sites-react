@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 // ねこ画像をより効率的に扱うためにnext / imageコンポーネントを使用(ESLintの指摘に対応)
 import Image from "next/image";
 
-// GitHub APIから返るデータの「形」を定義
+// GitHub APIからの受信データ（オブジェクト）を定義するインターフェース
 interface GitHubRepo {
   id: number;
   name: string;
@@ -240,7 +240,6 @@ export default function Home() {
             </section>
             <button 
               onClick={SpawnBtnClick}
-              title="ただの送信ボタンじゃありません!"
               className="w-full bg-indigo-600 text-white py-2 rounded-md font-bold hover:bg-indigo-700 transition-all shadow-lg active:scale-95">
               新しいねこを呼ぶ
             </button>
