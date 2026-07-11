@@ -166,7 +166,7 @@ export default function Home() {
 
           {/* reposの中身で判定する三項演算子。API情報取得前はnullであるため後者の処理となり、データが入り次第前者の表示がされる */}
           {repos ? (
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {repos.map((repo: GitHubRepo) => (
               <a 
                 key={repo.id} 
