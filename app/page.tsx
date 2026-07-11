@@ -219,13 +219,12 @@ export default function Home() {
             <div className="mt-6 flex justify-center">
               <div 
                 className="w-full h-[500px] rounded-xl shadow-md overflow-hidden" 
-                style={{ width: '100%', height: '500px', }}
+                style={{ width: '100%', height: '500px', position: 'relative', }}
               >
                 <Image
                 src={catImageUrl}
                 alt="かわいいねこの画像"
-                width={800}
-                height={600}
+                fill={true}
                 className="w-full h-auto"
                 onLoad={whenImageLoaded}
                 />
