@@ -47,7 +47,8 @@ export default function Home() {
 
         // isMountedフラグを見て画面上にあるときだけ取得値をセット
         if (isMounted){
-          setRepos(data?.slice(0, 8)); // 直近更新の8件取得
+          //setRepos(data?.slice(0, 8)); // 直近更新の8件取得
+          setRepos(data);   // sliceしない。fetch段階で絞っているため。
           setCatImageUrl(images[0].url);
         }
       } catch (error) {
