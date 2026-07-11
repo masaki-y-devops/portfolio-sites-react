@@ -224,8 +224,11 @@ export default function Home() {
                     src={catImageUrl}
                     alt="かわいいねこの画像"
                     fill={true}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="w-auto h-auto"
                     onLoad={whenImageLoaded}
+                    loading="eager"
+                    fetchPriority="high"
                     />
                   </div>
                 </div>
