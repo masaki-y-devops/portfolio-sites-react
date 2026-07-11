@@ -217,14 +217,14 @@ export default function Home() {
               {catImageUrl ? (
                 <div className="mt-6 flex justify-center">
                   <div 
-                    className="w-full h-auto rounded-xl overflow-hidden" 
+                    className="w-auto h-auto rounded-xl overflow-hidden" 
                     style={{ width: '100%', height: '500px', position: 'relative', }}
                   >
                     <Image
                     src={catImageUrl}
                     alt="かわいいねこの画像"
                     fill={true}
-                    className="w-full h-auto"
+                    className="w-auto h-auto"
                     onLoad={whenImageLoaded}
                     />
                   </div>
