@@ -194,8 +194,8 @@ export default function Home() {
           {/* iframe貼り付けで実装 */}
           <div className="shadow-md rounded-xl overflow-hidden">
             <iframe className="shadow-md rounded-xl" data-testid="embed-iframe" style={{ borderRadius: '12px', border: 'none' }} 
-              src="https://open.spotify.com/embed/playlist/635C2n92A07J8urkBP5mqH?utm_source=generator&si=abf6821c55c94fc1" 
-              width="100%" height="480" allowFullScreen={true} allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
+              src="https://open.spotify.com/embed/playlist/635C2n92A07J8urkBP5mqH?utm_source=generator&theme=0&si=7b697c90d8de4a24"
+              width="100%" height="720" allowFullScreen={true} allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
             </iframe>
           </div>
         </section>
