@@ -218,7 +218,7 @@ export default function Home() {
           {catImageUrl ? (
             <div className="mt-6 flex justify-center">
               <div 
-                className="w-full h-[500px] rounded-xl shadow-md overflow-hidden" 
+                className="w-full h-[500px] rounded-xl overflow-hidden" 
                 style={{ width: '100%', height: '500px', position: 'relative', }}
               >
                 <Image
@@ -259,6 +259,47 @@ export default function Home() {
               title="ただの送信ボタンじゃありません!"
               className="w-full bg-indigo-600 text-white py-2 rounded-md font-bold hover:bg-indigo-700 transition-all shadow-lg active:scale-95">
               メッセージを送る（新しいねこを呼ぶ）
+            </button>
+          </div>
+        </section>
+
+        <section className="mt-12 max-w-3xl mx-auto bg-indigo-50 p-8 rounded-2xl border border-indigo-100">
+          <h2 className="text-center text-xl font-bold mb-4 border-b-2 border-indigo-200 pb-2">
+                猫画像切らしてたので助かる
+          </h2>
+          <div className="space-y-4">
+            <section className="mt-12" id="cat_section">
+              {/* catImageUrlがある時「だけ」、imgタグを表示 */}
+              {/* GitHub側と同じく三項演算子（条件付きレンダリング）*/}
+              {catImageUrl ? (
+                <div className="mt-6 flex justify-center">
+                  <div 
+                    className="w-full h-[500px] rounded-xl overflow-hidden" 
+                    style={{ width: '100%', height: '500px', position: 'relative', }}
+                  >
+                    <Image
+                    src={catImageUrl}
+                    alt="かわいいねこの画像"
+                    fill={true}
+                    className="w-full h-auto"
+                    onLoad={whenImageLoaded}
+                    />
+                  </div>
+                </div>
+                ) : (
+                <div className="flex justify-center">
+                  <p className="text-center py-8 text-gray-500 text-sm animate-pulse">
+                    ねこを読み込み中。。。ちょっとだけまってね
+                  </p>
+                </div>    
+                )    
+              }
+            </section>
+            <button 
+              onClick={QueryBtnClick}
+              title="ただの送信ボタンじゃありません!"
+              className="w-full bg-indigo-600 text-white py-2 rounded-md font-bold hover:bg-indigo-700 transition-all shadow-lg active:scale-95">
+              新しいねこを呼ぶ
             </button>
           </div>
         </section>
