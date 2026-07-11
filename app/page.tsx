@@ -37,7 +37,7 @@ export default function Home() {
 
         // 複数のfetchをPromise.allで同時に行う（表示速度向上のため）
         const [gitres, catres] = await Promise.all([
-          // 全取得だとレートリミットに達しやすいため、per_page=8を追加して取得件数自体を絞ってみる
+          // 全取得だとレートリミットに達しやすいため、per_page=を追加して取得件数自体を絞ってみる
           fetch("https://api.github.com/users/masaki-y-devops/repos?per_page=8&sort=updated"),
           fetch("https://api.thecatapi.com/v1/images/search")
         ]);
@@ -47,8 +47,12 @@ export default function Home() {
 
         // isMountedフラグを見て画面上にあるときだけ取得値をセット
         if (isMounted){
-          //setRepos(data?.slice(0, 8)); // 直近更新の8件取得
-          setRepos(data);   // sliceしない。fetch段階で絞っているため。
+
+          // githubより取得したデータが正常取得（配列）の場合のみ当該データをセット（これがないとサイト全体が落ちてしまった）
+          if (Array.isArray(data)) {
+            setRepos(data);   // sliceしない。fetch段階で絞っているため。
+          }
+          
           setCatImageUrl(images[0].url);
         }
       } catch (error) {
@@ -179,7 +183,9 @@ export default function Home() {
           ) : (
             <div className="flex justify-center">
               <p className="text-center py-8 text-gray-500 text-sm animate-pulse">
-                リポジトリ情報を読み込み中...
+                リポジトリ情報を読み込み中...<br />
+                すぐに完了しない場合GitHub側の読み込み頻度制限を受けている場合があります。<br />
+                時間をおいて再度お試しください。
               </p>
             </div>
           )}
