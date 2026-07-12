@@ -2,6 +2,7 @@
 // クライアント側で実行
 "use client";
 
+// ヘッダー、フッターのインポート
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -13,10 +14,10 @@ import Image from "next/image";
 
 // MainContentの型宣言
 // 「とりあえず動くことを体感する」ためにany型で済ます
-// 後日改善予定
+// 
 interface MainContentProps {
     InitGitItems: any[];
-    InitCatItems: any;
+    InitCatItems: string | null;
 }
 
 // GitHub APIからの受信データ（オブジェクト）を定義するインターフェース

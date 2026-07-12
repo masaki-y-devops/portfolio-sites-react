@@ -14,7 +14,8 @@ async function getGitData() {
 async function getCatData() {
   const catres = await fetch("https://api.thecatapi.com/v1/images/search")
   if (!catres.ok) throw new Error("failed")
-  return catres.json();
+  const catdata = await catres.json();
+  return catdata === "" ? null : catdata[0].url;
 }
 
 // メインで実行される関数
