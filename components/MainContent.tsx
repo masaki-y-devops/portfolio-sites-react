@@ -9,7 +9,7 @@ import Footer from "@/components/Footer";
 // useEffectは未使用となったため削除
 import { useState } from "react";
 
-// ねこ画像をより効率的に扱うためにnext / imageコンポーネントを使用(ESLintの指摘に対応)
+// ねこ画像をより効率的に扱うためにnext / imageコンポーネントを使用
 import Image from "next/image";
 
 // MainContentの型宣言
@@ -59,7 +59,7 @@ export default function MainContent({ InitGitItems, InitCatItems }: MainContentP
     }
   }
   
-  // 問い合わせボタン用処理
+  // ねこ再召喚ボタン用処理
   const SpawnBtnClick = () => {
     
     // ボタンが押されたことを示すフラグデータを保存しておく
