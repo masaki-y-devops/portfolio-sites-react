@@ -127,16 +127,8 @@ export default function Home() {
 
   // return以下の要素が動的に変化する
   return (
-    <div>
-      {/* components/Header.tsxの呼び出し */}
+    <div className="flex flex-col h-screen overflow-hidden">
       <Header />
-      {/*
-      <header className="mb-12 text-center">
-        <h1 className="text-2xl font-extrabold text-indigo-700 mb-2">masaki-y-devopsの遊び場</h1>
-        <p className="text-slate-500">React(TypeScript)で構築</p>
-      </header>
-      */}
-
       <main className="h-screen bg-slate-50 p-8 text-slate-900 overflow-y-auto">
         <div className="max-w-3xl mx-auto w-full">
           <section className="mt-12">
@@ -258,10 +250,7 @@ export default function Home() {
           </section>
         </div>
       </main>
-
       <Footer />
-
     </div>
-    
   );
 }
