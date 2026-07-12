@@ -94,9 +94,9 @@ export default function MainContent({ InitGitItems, InitCatItems }: MainContentP
 
   // return以下の要素が動的に変化する
   return (
-    <div className="flex flex-col h-screen overflow-hidden">
+    <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="h-screen bg-slate-50 p-8 text-slate-900 overflow-y-auto">
+      <main className="flex flex-col min-h-screen bg-slate-50 p-8 text-slate-900 overflow-y-auto">
         <div className="max-w-3xl mx-auto w-full">
           <section className="mt-12">
             <h2 className="text-center text-xl font-bold mb-6 border-b-2 border-indigo-200 pb-2">
