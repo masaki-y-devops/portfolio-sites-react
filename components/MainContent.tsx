@@ -1,4 +1,3 @@
-// 実験室だよーん
 // クライアント側で実行
 "use client";
 
@@ -14,7 +13,7 @@ import Image from "next/image";
 
 // MainContentの型宣言
 // 「とりあえず動くことを体感する」ためにany型で済ます
-// 
+// ねこ画像については、空の文字列が入り表示エラーを防ぐため、string | null に変更
 interface MainContentProps {
     InitGitItems: any[];
     InitCatItems: string | null;
