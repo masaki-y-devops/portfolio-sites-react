@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "masaki-y-devopsの遊び場",
-  description: "React(TypeScript)で作成してみたサイト",
+  title: "masaki-y-playground",
+  description: "A first my Website using Next.js",
 };
 
 export default function RootLayout({
