@@ -99,7 +99,7 @@ export default function MainContent({ InitGitItems, InitCatItems }: MainContentP
       <main className="flex flex-col min-h-screen bg-slate-50 p-8 text-slate-900 overflow-y-auto">
         <div className="max-w-3xl mx-auto w-full">
           <section className="mt-12">
-            <h2 className="text-center text-xl font-bold mb-6 border-b-2 border-indigo-200 pb-2">
+            <h2 className="text-center text-xl font-bold mb-6 border-b-2 border-black-200 pb-2">
               勉強中の分野（言語）
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -127,7 +127,7 @@ export default function MainContent({ InitGitItems, InitCatItems }: MainContentP
           </section>
       
           <section className="mt-12">
-            <h2 className="text-center text-xl font-bold mb-6 border-b-2 border-indigo-200 pb-2">
+            <h2 className="text-center text-xl font-bold mb-6 border-b-2 border-black-200 pb-2">
               公開中のGitHubリポジトリ
             </h2>
 
@@ -159,7 +159,7 @@ export default function MainContent({ InitGitItems, InitCatItems }: MainContentP
           </section>
 
           <section className="mt-12">
-            <h2 className="text-center text-xl font-bold mb-6 border-b-2 border-indigo-200 pb-2">
+            <h2 className="text-center text-xl font-bold mb-6 border-b-2 border-black-200 pb-2">
               お気に入りの曲
             </h2>
             {/* Spotify公開プレイリストとの連携 */}
