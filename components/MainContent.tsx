@@ -5,17 +5,18 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
-// 状態管理のためのuseState,useEffectを使用
-import { useState, useEffect } from "react";
+// 状態管理のためのuseStateを使用
+// useEffectは未使用となったため削除
+import { useState } from "react";
 
 // ねこ画像をより効率的に扱うためにnext / imageコンポーネントを使用(ESLintの指摘に対応)
 import Image from "next/image";
 
 // MainContentの型宣言
-// 「とりあえず動くことを体感する」ためにany型で済ます
+// GitHubに関しては、下記定義を使用
 // ねこ画像については、空の文字列が入り表示エラーを防ぐため、string | null に変更
 interface MainContentProps {
-    InitGitItems: any[];
+    InitGitItems: GitHubRepo[] | null;
     InitCatItems: string | null;
 }
 
@@ -35,15 +36,8 @@ export default function MainContent({ InitGitItems, InitCatItems }: MainContentP
   // 変数を操作するための「関数」宣言
   // 上からGitHub情報、ねこ画像URLを格納する。
   // サーバ側処理（page.tsx内処理）から受け取ったデータを初期値として格納
-  const [repos, setRepos] = useState(InitGitItems);
+  const [repos] = useState(InitGitItems);
   const [catImageUrl, setCatImageUrl] = useState(InitCatItems);
-
-  /*
-  // useEffectによる関数のトリガー
-  // クライアント一括処理時代の名残、削除可能
-  useEffect(() => {
-  }, []);
-  */
 
   // 猫画像のonLoad時に作動する関数
   const whenImageLoaded = () => {
